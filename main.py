@@ -1,6 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
 import fitz
-import cv2
 from PIL import Image
 import numpy as np
 import os
@@ -34,10 +33,8 @@ async def get_pdf(file : UploadFile = File(...)):
             # Render the page to an image
             pix = page.get_pixmap(alpha=False)
             img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            
-
             arr = np.array(img)
-            arr_mean = cv2.mean(arr)
+            arr_mean = np.mean(arr)
             if not (arr_mean[0] == arr_mean[1] == arr_mean[2]):
                 colored_page_count += 1
                 num += 1
